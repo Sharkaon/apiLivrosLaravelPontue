@@ -29,7 +29,7 @@ class LivroController extends Controller
             $livro->titulo = $request->titulo;
             if($request->autor){
                 $livro->autor = $request->autor;
-                $livro->editor = $request->editor;
+                $livro->editora = $request->editora;
                 $livro->data_publi = $request->data_publi;
                 $livro->save();
             }else{
@@ -48,6 +48,43 @@ class LivroController extends Controller
         ], 201);
     }
 
+    public function storeMany(Request $request){
+        $livrosRequests = $request->json()->all();
+
+        foreach ($livrosRequests as $livroRequest) {
+            $livro = new Livro;
+
+            if(array_key_exists('titulo', $livroRequest)){
+                $livro->titulo = $livroRequest['titulo'];
+
+                if(array_key_exists('autor', $livroRequest)){
+                    $livro->autor = $livroRequest['autor'];
+
+                    if(array_key_exists('editora', $livroRequest))
+                        $livro->editora = $livroRequest['editora'];
+
+                    if(array_key_exists('data_publi', $livroRequest))
+                        $livro->data_publi = $livroRequest['data_publi'];
+                }else{
+                    return response()->json([
+                        "mensagem" => "Autor não pode ser nulo."
+                    ], 400);
+                }
+
+            }else{
+                return response()->json([
+                    "mensagem" => "Título não pode ser nulo."
+                ], 400);
+            }
+        
+        $livro->save();
+        }
+
+        return response()->json([
+            "mensagem" => "Registros dos livros criados."
+        ], 201);
+    }
+
     public function update(int $id, Request $request){
         if(Livro::where('id', $id)->exists()) {
             $livro = Livro::where('id', $id)->firstOrFail();
@@ -58,8 +95,8 @@ class LivroController extends Controller
             if($request->autor)
                 $livro->autor = $request->autor;
 
-            if($request->editor)
-                $livro->editor = $request->editor;
+            if($request->editora)
+                $livro->editora = $request->editora;
 
             if($request->data_publi)
                 $livro->data_publi = $request->data_publi;
@@ -82,7 +119,7 @@ class LivroController extends Controller
            $livro->delete();
 
            return response()->json([
-               "message" => "Registro do livro deletado."
+               "message" => "Registro do livro deletado com sucesso."
            ], 200);
         } else {
             return response()->json([

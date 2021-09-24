@@ -12,5 +12,5 @@ class Livro extends Model
     protected $primaryKey = 'id';
     protected $table = 'livros';
     protected $fillable = ['titulo', 'autor'];
-    protected $nullable = ['editor', 'data_publi'];
+    protected $nullable = ['editora', 'data_publi'];
 }
