@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLivrosTable extends Migration
+class CriarTabelaLivros extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class CreateLivrosTable extends Migration
             $table->id();
             $table->string('titulo');
             $table->string('autor');
-            $table->string('editor')->nullable();
+            $table->string('editora')->nullable();
             $table->date('data_publi')->nullable();
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ class CreateLivrosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('livros');
+        //
     }
 }
