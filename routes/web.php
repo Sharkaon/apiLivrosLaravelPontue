@@ -15,8 +15,6 @@ use App\Http\Controllers\LivroController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return view('home');
 });
-
-Route::get('livros', [LivroController::class, 'index']);
-Route::post('livros', [LivroController::class, 'create']);
