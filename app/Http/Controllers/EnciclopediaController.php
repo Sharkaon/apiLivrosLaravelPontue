@@ -8,19 +8,15 @@ use App\Models\Enciclopedia;
 class EnciclopediaController extends Controller
 {
     public function index(){
-        $enciclopedias = enciclopedia::get()->toJson(JSON_PRETTY_PRINT);
-        return response($enciclopedias, 200);
+        $resposta = $this->mostrarTodos("App\Models\Enciclopedia");
+
+        return $resposta;
     }
 
     public function show(int $id){
-        if(enciclopedia::where('id', $id)->exists()) {
-            $enciclopedia = enciclopedia::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
-            return response($enciclopedia, 200);
-        } else {
-            return response()->json([
-                "message" => "enciclopedia com esse id não existe."
-            ], 204);
-        }
+        $resposta = $this->mostrarUm("App\Models\Enciclopedia", $id);
+        
+        return $resposta;
     }
 
     public function store(Request $request){
@@ -96,17 +92,8 @@ class EnciclopediaController extends Controller
     }
 
     public function destroy(int $id){
-        if(enciclopedia::where('id', $id)->exists()) {
-           $enciclopedia = enciclopedia::where('id', $id)->firstOrFail();
-           $enciclopedia->delete();
-
-           return response()->json([
-               "message" => "Registro do enciclopedia deletado com sucesso."
-           ], 200);
-        } else {
-            return response()->json([
-                "message" => "enciclopedia com esse id não existe."
-            ], 400);
-        }
+        $resposta = $this->deletar("App\Models\Enciclopedia", $id);
+        
+        return $resposta;
     }
 }
