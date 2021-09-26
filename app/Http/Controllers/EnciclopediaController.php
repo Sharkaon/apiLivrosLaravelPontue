@@ -20,55 +20,56 @@ class EnciclopediaController extends Controller
     }
 
     public function store(Request $request){
-        $enciclopedia = new enciclopedia;
-        if($request->edicao){
-            $enciclopedia->edicao = $request->edicao;
-            $enciclopedia->editora = $request->editora;
-            $enciclopedia->data_publi = $request->data_publi;
-            $enciclopedia->save();
-        }else{
-            return response()->json([
-                "mensagem" => "Título não pode ser nulo."
-            ], 400);
-        }
+        $request->validate([
+            'edicao' => 'required|string',
+            'editora' => ['nullable', 'present'],
+            'data_publi' => ['nullable', 'present']
+        ]);
 
+        $enciclopedia = new Enciclopedia;
+
+        $enciclopedia->edicao = $request->edicao;
+        $enciclopedia->editora = $request->editora;
+        $enciclopedia->data_publi = $request->data_publi;
+        $enciclopedia->save();
+        
         return response()->json([
             "mensagem" => "Registro do enciclopedia criado"
         ], 201);
     }
 
-    public function storeMany(Request $request){
-        $enciclopediasRequests = $request->json()->all();
+    // public function storeMany(Request $request){
+    //     $enciclopediasRequests = $request->json()->all();
 
-        foreach ($enciclopediasRequests as $enciclopediaRequest) {
-            $enciclopedia = new enciclopedia;
+    //     foreach ($enciclopediasRequests as $enciclopediaRequest) {
+    //         $enciclopedia = new Enciclopedia;
 
-            if(array_key_exists('edicao', $enciclopediaRequest)){
-                $enciclopedia->edicao = $enciclopediaRequest['edicao'];
+    //         if(array_key_exists('edicao', $enciclopediaRequest)){
+    //             $enciclopedia->edicao = $enciclopediaRequest['edicao'];
 
-                if(array_key_exists('editora', $enciclopediaRequest))
-                    $enciclopedia->editora = $enciclopediaRequest['editora'];
+    //             if(array_key_exists('editora', $enciclopediaRequest))
+    //                 $enciclopedia->editora = $enciclopediaRequest['editora'];
 
-                if(array_key_exists('data_publi', $enciclopediaRequest))
-                    $enciclopedia->data_publi = $enciclopediaRequest['data_publi'];
+    //             if(array_key_exists('data_publi', $enciclopediaRequest))
+    //                 $enciclopedia->data_publi = $enciclopediaRequest['data_publi'];
 
-            }else{
-                return response()->json([
-                    "mensagem" => "Título não pode ser nulo."
-                ], 400);
-            }
+    //         }else{
+    //             return response()->json([
+    //                 "mensagem" => "Título não pode ser nulo."
+    //             ], 400);
+    //         }
         
-        $enciclopedia->save();
-        }
+    //     $enciclopedia->save();
+    //     }
 
-        return response()->json([
-            "mensagem" => "Registros dos enciclopedias criados."
-        ], 201);
-    }
+    //     return response()->json([
+    //         "mensagem" => "Registros dos enciclopedias criados."
+    //     ], 201);
+    // }
 
     public function update(int $id, Request $request){
-        if(enciclopedia::where('id', $id)->exists()) {
-            $enciclopedia = enciclopedia::where('id', $id)->firstOrFail();
+        if(Enciclopedia::where('id', $id)->exists()) {
+            $enciclopedia = Enciclopedia::where('id', $id)->firstOrFail();
 
             if($request->edicao)
                 $enciclopedia->edicao = $request->edicao;

@@ -20,66 +20,62 @@ class LivroController extends Controller
     }
 
     public function store(Request $request){
+        $request->validate([
+            'titulo' => 'required|string',
+            'autor' => 'required|string',
+            'editora' => ['nullable', 'present'],
+            'data_publi' => ['nullable', 'present']
+        ]);
+
         $livro = new Livro;
-        if($request->titulo){
-            $livro->titulo = $request->titulo;
-            if($request->autor){
-                $livro->autor = $request->autor;
-                $livro->editora = $request->editora;
-                $livro->data_publi = $request->data_publi;
-                $livro->save();
-            }else{
-                return response()->json([
-                    "mensagem" => "Autor não pode ser nulo."
-                ], 400);
-            }
-        }else{
-            return response()->json([
-                "mensagem" => "Título não pode ser nulo."
-            ], 400);
-        }
+        
+        $livro->titulo = $request->titulo;
+        $livro->autor = $request->autor;
+        $livro->editora = $request->editora;
+        $livro->data_publi = $request->data_publi;
+        $livro->save();
 
         return response()->json([
             "mensagem" => "Registro do livro criado"
         ], 201);
     }
 
-    public function storeMany(Request $request){
-        $livrosRequests = $request->json()->all();
+    // public function storeMany(Request $request){
+    //     $livrosRequests = $request->json()->all();
 
-        foreach ($livrosRequests as $livroRequest) {
-            $livro = new Livro;
+    //     foreach ($livrosRequests as $livroRequest) {
+    //         $livro = new Livro;
 
-            if(array_key_exists('titulo', $livroRequest)){
-                $livro->titulo = $livroRequest['titulo'];
+    //         if(array_key_exists('titulo', $livroRequest)){
+    //             $livro->titulo = $livroRequest['titulo'];
 
-                if(array_key_exists('autor', $livroRequest)){
-                    $livro->autor = $livroRequest['autor'];
+    //             if(array_key_exists('autor', $livroRequest)){
+    //                 $livro->autor = $livroRequest['autor'];
 
-                    if(array_key_exists('editora', $livroRequest))
-                        $livro->editora = $livroRequest['editora'];
+    //                 if(array_key_exists('editora', $livroRequest))
+    //                     $livro->editora = $livroRequest['editora'];
 
-                    if(array_key_exists('data_publi', $livroRequest))
-                        $livro->data_publi = $livroRequest['data_publi'];
-                }else{
-                    return response()->json([
-                        "mensagem" => "Autor não pode ser nulo."
-                    ], 400);
-                }
+    //                 if(array_key_exists('data_publi', $livroRequest))
+    //                     $livro->data_publi = $livroRequest['data_publi'];
+    //             }else{
+    //                 return response()->json([
+    //                     "mensagem" => "Autor não pode ser nulo."
+    //                 ], 400);
+    //             }
 
-            }else{
-                return response()->json([
-                    "mensagem" => "Título não pode ser nulo."
-                ], 400);
-            }
+    //         }else{
+    //             return response()->json([
+    //                 "mensagem" => "Título não pode ser nulo."
+    //             ], 400);
+    //         }
         
-        $livro->save();
-        }
+    //     $livro->save();
+    // }
 
-        return response()->json([
-            "mensagem" => "Registros dos livros criados."
-        ], 201);
-    }
+    //     return response()->json([
+    //         "mensagem" => "Registros dos livros criados."
+    //     ], 201);
+    // }
 
     public function update(int $id, Request $request){
         if(Livro::where('id', $id)->exists()) {
