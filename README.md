@@ -2,7 +2,7 @@ API de Livros feita em Laravel para processo seletivo da Pontue.
 
 -> A aplicação assume que esteja em localhost na porta 8000 com URL padrão http://localhost:8000, caso seja rodado em outro ambiente, recomenda-se que se altere essa informação no arquivo .env;  
 
--> As configurações do Banco de Dados podem ser alteradas no arquivo .env, mas por padrão são:
+-> As configurações do Banco de Dados podem ser alteradas no arquivo .env, mas por padrão são:  
     Conexão: MySQL  
     Host: 127.0.0.1  
     Nome do banco: apilivroslaravel  
