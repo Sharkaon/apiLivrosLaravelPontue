@@ -16,6 +16,7 @@ class LivrosSeeder extends Seeder
      */
     public function run()
     {
+        // Insere livros e enciclopédias aleatórios
         DB::table('livros')->insert([
             'titulo' => Str::random(15),
             'autor' => Str::random(10),

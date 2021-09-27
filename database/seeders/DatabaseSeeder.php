@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Chamar 9 vezes o Seeder do projeto para popular o banco pra testes
         for($i=0; $i<9; $i++){
             $this->call([
                 LivrosSeeder::class

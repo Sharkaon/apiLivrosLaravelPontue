@@ -16,18 +16,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        // Inserir um usuario para testes
         DB::table('users')->insert([
             'name' => 'teste',
             'email' => 'teste@gmail.com',
             'password' => bcrypt('123')
         ]);
-
-        // $usuario = User::create([
-        //     'name' => 'teste',
-        //     'email' => 'teste@gmail.com',
-        //     'password' => bcrypt('123')
-        // ]);
-
-        // $usuario->createToken('teste@gmail.com')->plainTextToken();
     }
 }
