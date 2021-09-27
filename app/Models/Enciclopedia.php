@@ -11,6 +11,5 @@ class Enciclopedia extends Model
 
     protected $primaryKey = 'id';
     protected $table = 'enciclopedias';
-    protected $fillable = ['edicao'];
-    protected $nullable = ['editora', 'data_publi'];
+    protected $fillable = ['edicao', 'editora', 'data_publi'];
 }

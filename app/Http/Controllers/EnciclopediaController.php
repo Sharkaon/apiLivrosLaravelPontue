@@ -26,65 +26,16 @@ class EnciclopediaController extends Controller
             'data_publi' => ['nullable', 'present']
         ]);
 
-        $enciclopedia = new Enciclopedia;
-
-        $enciclopedia->edicao = $request->edicao;
-        $enciclopedia->editora = $request->editora;
-        $enciclopedia->data_publi = $request->data_publi;
-        $enciclopedia->save();
-        
-        return response()->json([
-            "mensagem" => "Registro do enciclopedia criado"
-        ], 201);
+        return Enciclopedia::create($request->all());
     }
-
-    // public function storeMany(Request $request){
-    //     $enciclopediasRequests = $request->json()->all();
-
-    //     foreach ($enciclopediasRequests as $enciclopediaRequest) {
-    //         $enciclopedia = new Enciclopedia;
-
-    //         if(array_key_exists('edicao', $enciclopediaRequest)){
-    //             $enciclopedia->edicao = $enciclopediaRequest['edicao'];
-
-    //             if(array_key_exists('editora', $enciclopediaRequest))
-    //                 $enciclopedia->editora = $enciclopediaRequest['editora'];
-
-    //             if(array_key_exists('data_publi', $enciclopediaRequest))
-    //                 $enciclopedia->data_publi = $enciclopediaRequest['data_publi'];
-
-    //         }else{
-    //             return response()->json([
-    //                 "mensagem" => "Título não pode ser nulo."
-    //             ], 400);
-    //         }
-        
-    //     $enciclopedia->save();
-    //     }
-
-    //     return response()->json([
-    //         "mensagem" => "Registros dos enciclopedias criados."
-    //     ], 201);
-    // }
 
     public function update(int $id, Request $request){
         if(Enciclopedia::where('id', $id)->exists()) {
             $enciclopedia = Enciclopedia::where('id', $id)->firstOrFail();
+            
+            $enciclopedia->update($request->all());
 
-            if($request->edicao)
-                $enciclopedia->edicao = $request->edicao;
-
-            if($request->editora)
-                $enciclopedia->editora = $request->editora;
-
-            if($request->data_publi)
-                $enciclopedia->data_publi = $request->data_publi;
-
-            $enciclopedia->save();
-
-            return response()->json([
-                "message" => "Registro atualizado com sucesso."
-            ], 200);
+            return $enciclopedia;
         } else {
             return response()->json([
                 "message" => "enciclopedia com esse id não existe."
