@@ -10,16 +10,20 @@
     <body>
         <div class="row" style="margin-top: 5%;">
             <div class="col-10 mx-auto">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="trocar"
+                    onclick="trocar()"
+                >Ver Enciclopédias</button>
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Autor</th>
+                            <th scope="col" id="nome">Título</th>
+                            <th scope="col" id="autor">Autor</th>
                             <th scope="col">Data de Publicação</th>
                             <th scope="col">Editora</th>
-                            <!-- <th scope="col">Editar</th>
-                            <th scope="col">Deletar</th> -->
                         </tr>
                     </thead>
                     <tbody id="tabela">
@@ -57,15 +61,24 @@
                                 id.appendChild(idText);
                                 tr.appendChild(id);
 
-                                const titulo = document.createElement("td");
-                                const tituloText = document.createTextNode(registro.titulo);
-                                titulo.appendChild(tituloText);
-                                tr.appendChild(titulo);
+                                if(link.includes("livros")){
+                                    const titulo = document.createElement("td");
+                                    const tituloText = document.createTextNode(registro.titulo);
+                                    titulo.appendChild(tituloText);
+                                    tr.appendChild(titulo);
 
-                                const autor = document.createElement("td");
-                                const autorText = document.createTextNode(registro.autor);
-                                autor.appendChild(autorText);
-                                tr.appendChild(autor);
+                                    const autor = document.createElement("td");
+                                    const autorText = document.createTextNode(registro.autor);
+                                    autor.appendChild(autorText);
+                                    tr.appendChild(autor);
+                                }
+
+                                if (link.includes("enciclopedia")){
+                                    const edicao = document.createElement("td");
+                                    const edicaoText = document.createTextNode(registro.edicao);
+                                    edicao.appendChild(edicaoText);
+                                    tr.appendChild(edicao);
+                                }
 
                                 const data_publi = document.createElement("td");
                                 let data_publiText = document.createTextNode("");
@@ -88,6 +101,11 @@
                                 const botaoAnterior = document.createElement("button");
                                 const botaoAnteriorText = document.createTextNode("Anterior");
                                 botaoAnterior.appendChild(botaoAnteriorText);
+                                if(link.includes("livro"))
+                                    botaoAnterior.classList.add("btn-primary");
+                                else
+                                    botaoAnterior.classList.add("btn-secondary");
+                                botaoAnterior.classList.add("btn");
                                 botaoAnterior.onclick = () => {consultar(resposta.prev_page_url)};
                                 botoesDiv.appendChild(botaoAnterior);
                             }
@@ -96,6 +114,11 @@
                                 const botaoProximo = document.createElement("button");
                                 const botaoProximoText = document.createTextNode("Próximo");
                                 botaoProximo.appendChild(botaoProximoText);
+                                if(link.includes("livro"))
+                                    botaoProximo.classList.add("btn-primary");
+                                else
+                                    botaoProximo.classList.add("btn-secondary");
+                                botaoProximo.classList.add("btn");
                                 botaoProximo.onclick = function() {consultar(resposta.next_page_url)};
                                 botoesDiv.appendChild(botaoProximo);
                             }
@@ -111,6 +134,30 @@
             }
 
             window.addEventListener("load", consultar("http://localhost:8000/api/livros"));
+
+            const botaoTrocar = document.getElementById("trocar");
+            const autor = document.getElementById("autor");
+            const nome = document.getElementById("nome");
+
+            const trocar = () => {
+                console.log("Clicou");
+                if(botaoTrocar.classList.contains("btn-primary")){
+                    botaoTrocar.classList.remove("btn-primary");
+                    botaoTrocar.classList.add("btn-secondary");
+                    botaoTrocar.innerText = "Ver Livros";
+                    autor.style.display = "none";
+                    nome.innerText = "Edição";
+                    consultar("http://localhost:8000/api/enciclopedias");
+                }
+                else if(botaoTrocar.classList.contains("btn-secondary")){
+                    botaoTrocar.classList.remove("btn-secondary");
+                    botaoTrocar.classList.add("btn-primary");
+                    botaoTrocar.innerText = "Ver Enciclopédias";
+                    autor.style.display = "table-cell";
+                    nome.innerText = "Título";
+                    consultar("http://localhost:8000/api/livros");
+                }
+            }
         </script>
     </body>
 </html>
