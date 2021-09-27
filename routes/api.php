@@ -23,7 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('cadastrar', [UsuarioController::class, 'cadastrar']);
 Route::post('entrar', [UsuarioController::class, 'entrar']);
-// 1|JupoatdyACl1cZO3LPT0GVbQ9K2kypHje62TcL5f
 
 Route::get('livros', [LivroController::class, 'index']);
 Route::get('livros/{id}', [LivroController::class, 'show']);
